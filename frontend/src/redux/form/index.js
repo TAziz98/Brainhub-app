@@ -65,9 +65,31 @@ export function submitForm() {
         dispatch(setLoading(false));
         return;
       }
+      const body = {
+        firstName: form.data.firstname,
+        lastName: form.data.lastname,
+        email: form.data.email,
+        eventDate: form.data.date,
+      };
+      console.log(body);
+      const response = await fetch(
+        "https://europe-west3-brainhub-42b7c.cloudfunctions.net/api/event",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      const back = await response.json();
+      console.log(back);
+
       console.log("success, make api call");
       dispatch(clearForm());
     } catch (error) {
+      console.error(error);
       dispatch(setError("Error while submiting form."));
     }
     dispatch(setLoading(false));
